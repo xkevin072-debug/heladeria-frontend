@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import ListaVentas from './components/ListaVentas';
+import CatalogoHelados from './components/CatalogoHelados';
 import FormularioVenta from './components/FormularioVenta';
+import ListaVentas from './components/ListaVentas';
 
 function App() {
   // Al cambiar este número, ListaVentas vuelve a pedir los datos
@@ -8,10 +9,23 @@ function App() {
   const refrescar = () => setRecarga(r => r + 1);
 
   return (
-    <div>
-      <h1>Heladería</h1>
-      <FormularioVenta onCreate={refrescar} />
-      <ListaVentas recarga={recarga} />
+    <div className="app">
+      <header className="cabecera">
+        <h1>🍦 Heladería</h1>
+        <p>Registro de ventas</p>
+      </header>
+
+      <section className="tarjeta">
+        <CatalogoHelados />
+      </section>
+
+      <section className="tarjeta">
+        <FormularioVenta onCreate={refrescar} />
+      </section>
+
+      <section className="tarjeta">
+        <ListaVentas recarga={recarga} />
+      </section>
     </div>
   );
 }

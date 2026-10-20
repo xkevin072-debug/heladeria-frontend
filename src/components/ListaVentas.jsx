@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { api } from '../api';
 import EditarVenta from './EditarVenta';
+import HeladoImagen from './HeladoImagen';
 
 function ListaVentas({ recarga }) {
   const [ventas, setVentas] = useState([]);
@@ -31,46 +32,60 @@ function ListaVentas({ recarga }) {
   return (
     <div>
       <h2>Ventas de la Heladería</h2>
-      <table border="1">
-        <thead>
-          <tr>
-            <th>Empleado</th>
-            <th>Helado</th>
-            <th>Cantidad</th>
-            <th>Precio</th>
-            <th>Total</th>
-            <th>Fecha</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          {ventas.map(v => (
-            <tr key={v.id}>
-              <td>{v.empleado}</td>
-              <td>{v.helado}</td>
-              <td>{v.cantidad}</td>
-              <td>${Number(v.precio).toFixed(2)}</td>
-              <td>${Number(v.total).toFixed(2)}</td>
-              <td>{v.fecha}</td>
-              <td>
-                <button onClick={() => setVentaSeleccionada(v)}>Editar</button>
-                <button onClick={() => eliminarVenta(v.id)}>Eliminar</button>
-              </td>
+
+      <div className="tabla-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>Empleado</th>
+              <th>Helado</th>
+              <th>Cantidad</th>
+              <th>Precio</th>
+              <th>Total</th>
+              <th>Fecha</th>
+              <th>Acciones</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {ventas.map(v => (
+              <tr key={v.id}>
+                <td>{v.empleado}</td>
+                <td>
+                  <div className="celda-helado">
+                    <HeladoImagen nombre={v.helado} size={36} />
+                    {v.helado}
+                  </div>
+                </td>
+                <td>{v.cantidad}</td>
+                <td>${Number(v.precio).toFixed(2)}</td>
+                <td>${Number(v.total).toFixed(2)}</td>
+                <td>{v.fecha}</td>
+                <td>
+                  <button className="btn-editar" onClick={() => setVentaSeleccionada(v)}>
+                    Editar
+                  </button>
+                  <button className="btn-eliminar" onClick={() => eliminarVenta(v.id)}>
+                    Eliminar
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
       {ventaSeleccionada && (
-        <EditarVenta
-          key={ventaSeleccionada.id}
-          venta={ventaSeleccionada}
-          onUpdate={() => {
-            setVentaSeleccionada(null);
-            cargarVentas();
-          }}
-          onCancel={() => setVentaSeleccionada(null)}
-        />
+        <div className="panel-editar">
+          <EditarVenta
+            key={ventaSeleccionada.id}
+            venta={ventaSeleccionada}
+            onUpdate={() => {
+              setVentaSeleccionada(null);
+              cargarVentas();
+            }}
+            onCancel={() => setVentaSeleccionada(null)}
+          />
+        </div>
       )}
     </div>
   );
